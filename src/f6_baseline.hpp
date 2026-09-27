@@ -1,8 +1,10 @@
 #pragma once
 
+#include <algorithm>
 #include <fstream>
 #include <regex>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -21,22 +23,33 @@ class BaselineReplayAnalyzer final : public ReplayAnalyzer {
     CheckTimestamps(commands_path, "commands", issues);
 
     std::unordered_map<long long, std::string> states;
-    std::unordered_map<long long, bool> fire;
+    std::unordered_map<long long, Command> fire;
     ReadTracking(tracking_path, states);
     ReadCommands(commands_path, fire);
-    for (const auto& [frame, enabled] : fire) {
+    for (const auto& [frame, command] : fire) {
       const auto state = states.find(frame);
-      if (enabled && (state == states.end() || state->second != "TRACK")) {
-        issues.push_back(ReplayIssue{static_cast<double>(frame),
+      if (command.enabled && (state == states.end() || state->second != "TRACK")) {
+        issues.push_back(ReplayIssue{command.timestamp_sec,
                                      "fire_while_untracked",
-                                     "fire_enable is true while tracking state is absent or not TRACK",
+                                     "commands frame_id=" + std::to_string(frame) +
+                                         " fire_enable>0; tracking state=" +
+                                         (state == states.end() ? "absent" : state->second),
                                      true});
       }
     }
+    std::sort(issues.begin(), issues.end(), [](const ReplayIssue& a, const ReplayIssue& b) {
+      return std::tie(a.timestamp_sec, a.type, a.evidence, a.safety_relevant) <
+             std::tie(b.timestamp_sec, b.type, b.evidence, b.safety_relevant);
+    });
     return issues;
   }
 
  private:
+  struct Command {
+    double timestamp_sec = 0.0;
+    bool enabled = false;
+  };
+
   static bool ReadNumber(const std::string& line, const char* key, double& value) {
     const std::regex pattern(std::string("\\\"") + key + "\\\"\\s*:\\s*(-?[0-9]+(?:\\.[0-9]+)?)");
     std::smatch match;
@@ -91,14 +104,16 @@ class BaselineReplayAnalyzer final : public ReplayAnalyzer {
   }
 
   static void ReadCommands(const std::string& path,
-                           std::unordered_map<long long, bool>& fire) {
+                           std::unordered_map<long long, Command>& fire) {
     std::ifstream input(path);
     std::string line;
     while (std::getline(input, line)) {
       long long frame = 0;
       double value = 0.0;
-      if (ReadLong(line, "frame_id", frame) && ReadNumber(line, "fire_enable", value)) {
-        fire[frame] = value > 0.0;
+      double timestamp = 0.0;
+      if (ReadLong(line, "frame_id", frame) && ReadNumber(line, "fire_enable", value) &&
+          ReadNumber(line, "timestamp", timestamp)) {
+        fire[frame] = Command{timestamp, value > 0.0};
       }
     }
   }

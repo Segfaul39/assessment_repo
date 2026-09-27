@@ -28,3 +28,16 @@
 {"case":27,"distance_m":28.0,"height_m":6.0,"speed_mps":30.0}
 {"case":28,"distance_m":35.0,"height_m":-6.0,"speed_mps":30.0}
 {"case":29,"distance_m":45.0,"height_m":0.0,"speed_mps":28.0}
+{"case":30,"distance_m":50.0,"height_m":0.0,"speed_mps":20.0}
+{"case":31,"distance_m":40.78,"height_m":0.0,"speed_mps":20.0}
+{"case":32,"distance_m":40.8,"height_m":0.0,"speed_mps":20.0}
+{"case":33,"distance_m":0.5,"height_m":-1.0,"speed_mps":15.0}
+{"case":34,"distance_m":0.05,"height_m":0.0,"speed_mps":20.0}
+{"case":35,"distance_m":0.0501,"height_m":0.0,"speed_mps":20.0}
+{"case":36,"distance_m":1.0,"height_m":0.0,"speed_mps":60.0}
+{"case":37,"distance_m":1.0,"height_m":0.0,"speed_mps":60.01}
+{"case":38,"distance_m":10.0,"height_m":10.0,"speed_mps":30.0}
+{"case":39,"distance_m":10.0,"height_m":10.01,"speed_mps":30.0}
+{"case":40,"distance_m":10.0,"height_m":-10.0,"speed_mps":30.0}
+{"case":41,"distance_m":10.0,"height_m":-10.01,"speed_mps":30.0}
+{"case":42,"distance_m":1.0,"height_m":0.0,"speed_mps":0.1}

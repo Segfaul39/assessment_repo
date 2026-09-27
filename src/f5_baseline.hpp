@@ -6,9 +6,9 @@
 
 namespace rm_assessment {
 
-// Baseline uses the sample's current processing delay plus flight time. It
-// does not validate timestamp ordering or cap stale observations, which makes
-// those omissions visible in the public replay.
+// Runnable constant-velocity baseline with per-sample input checks. Validate
+// its behavior against LatencySample's time contract and report comparisons
+// using the public evaluator; the starter is not a reference solution.
 class BaselineLatencyPredictor final : public LatencyPredictor {
  public:
   Prediction predict(const LatencySample& sample) const override {

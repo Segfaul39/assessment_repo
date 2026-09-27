@@ -1,32 +1,61 @@
 [
   {
     "timestamp": 3.0,
+    "frame_id": 180,
     "type": "dropout_window",
-    "note": "公开遮挡窗口起点"
+    "note": "第一段连续检测缺失开始；tracking=TEMP_LOST，命令禁火。",
+    "end_frame_id_exclusive": 205
   },
   {
-    "timestamp": 3.4,
+    "timestamp": 3.4166666666666665,
+    "frame_id": 205,
     "type": "reacquire",
-    "note": "目标重新出现"
+    "note": "第204帧仍缺失，第205帧恢复检测与TRACK状态。"
   },
   {
     "timestamp": 6.0,
+    "frame_id": 360,
     "type": "id_switch",
-    "note": "检测 ID 与跟踪 ID 不一致"
+    "note": "检测target_id=red_4，但tracking.track_id与commands.selected_id仍为red_3；带火命令与ID不一致。",
+    "end_frame_id_exclusive": 368
   },
   {
     "timestamp": 7.0,
+    "frame_id": 420,
     "type": "dropout_window",
-    "note": "第二个遮挡窗口起点"
+    "note": "第二段连续检测缺失开始；tracking=TEMP_LOST，命令禁火。",
+    "end_frame_id_exclusive": 436
+  },
+  {
+    "timestamp": 7.266666666666667,
+    "frame_id": 436,
+    "type": "reacquire",
+    "note": "第二段检测缺失结束，恢复检测与TRACK状态。"
   },
   {
     "timestamp": 8.5,
+    "frame_id": 510,
     "type": "unsafe_fire",
-    "note": "TEMP_LOST 期间仍有开火命令"
+    "note": "检测缺失、tracking=TEMP_LOST时commands.fire_enable=1。",
+    "end_frame_id_exclusive": 516
+  },
+  {
+    "timestamp": 8.6,
+    "frame_id": 516,
+    "type": "reacquire",
+    "note": "禁火故障窗口后恢复检测与TRACK状态。"
+  },
+  {
+    "timestamp": 8.95,
+    "frame_id": 540,
+    "type": "timestamp_reversed",
+    "note": "commands第540帧时间8.95秒早于上一行第539帧；按frame_id与其他模块对齐，保留原行序检查倒退。",
+    "module": "commands"
   },
   {
     "timestamp": 9.8,
+    "frame_id": 588,
     "type": "manual_review",
-    "note": "复盘检查点：解释跟踪状态、目标位置变化和开火命令是否一致"
+    "note": "正常对照检查点，不预设故障；比较三个模块的状态、位置和开火条件。"
   }
 ]

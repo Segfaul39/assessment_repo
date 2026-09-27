@@ -16,6 +16,7 @@ struct AnonymousObservation {
   bool valid = true;
 };
 
+// Reacquisition is the TempLost -> Tracking transition, not a separate state.
 enum class TrackState { Idle, Confirming, Tracking, TempLost, Lost };
 
 struct TrackOutput {
@@ -27,6 +28,10 @@ struct TrackOutput {
 class ReacquisitionTracker {
  public:
   virtual ~ReacquisitionTracker() = default;
+  // Call once per frame, including frames without a valid observation. CSV rows
+  // with measurement_valid=0 are frame placeholders and become an empty vector;
+  // do not parse their blank coordinates. observation_id/color are not matching
+  // inputs. CSV row order and observation IDs do not define persistent identity.
   virtual TrackOutput update(double timestamp_sec,
                              const std::vector<AnonymousObservation>& observations) = 0;
   virtual void reset() = 0;
