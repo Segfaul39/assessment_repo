@@ -7,9 +7,9 @@
 
 namespace rm_assessment {
 
-// Flat-earth projectile baseline. It deliberately exposes the common edge
-// cases for F4: invalid inputs, no real low-angle solution, and non-finite
-// arithmetic. Angles are radians and flight time is seconds.
+// Runnable no-drag low-arc baseline. Angles are radians and flight time is
+// seconds. Validate its behavior against BallisticSolver's documented contract
+// and provide boundary tests as part of the submission.
 class BaselineBallisticSolver final : public BallisticSolver {
  public:
   BallisticResult solve(double distance_m, double height_m,
