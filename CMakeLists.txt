@@ -24,6 +24,10 @@ target_include_directories(assessment_contracts INTERFACE ${CMAKE_CURRENT_SOURCE
 add_executable(contract_compile_test tests/contract_compile_test.cpp)
 target_link_libraries(contract_compile_test PRIVATE assessment_contracts)
 
+#f5
+add_executable(f5_sequence tests/f5_sequence.cpp)
+target_link_libraries(f5_sequence PRIVATE assessment_contracts)
+
 #f6
 add_executable(f6_replay tests/f6_replay.cpp)
 target_link_libraries(f6_replay PRIVATE assessment_contracts)
@@ -41,7 +45,10 @@ if(BUILD_TESTING)
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/f6_public_data_test.py)
   add_test(NAME f5_public_evaluation
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/f5_public_evaluation.py self-test)
-
+  
+  add_test(NAME f5_sequence
+    COMMAND f5_sequence 
+      ${CMAKE_CURRENT_SOURCE_DIR}/data/F5/F5_latency_sequence.csv)
   add_test(NAME f6_replay
     COMMAND f6_replay
       ${CMAKE_CURRENT_SOURCE_DIR}/data/F6/F6_detections.jsonl
