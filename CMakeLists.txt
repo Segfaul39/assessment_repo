@@ -24,6 +24,10 @@ target_include_directories(assessment_contracts INTERFACE ${CMAKE_CURRENT_SOURCE
 add_executable(contract_compile_test tests/contract_compile_test.cpp)
 target_link_libraries(contract_compile_test PRIVATE assessment_contracts)
 
+#f2
+add_executable(f2_replay tests/f2_replay.cpp)
+target_link_libraries(f2_replay PRIVATE assessment_contracts)
+
 #f3
 add_executable(f3_replay tests/f3_replay.cpp)
 target_link_libraries(f3_replay PRIVATE assessment_contracts)
@@ -50,6 +54,8 @@ if(BUILD_TESTING)
   add_test(NAME f5_public_evaluation
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tests/f5_public_evaluation.py self-test)
   
+  add_test(NAME f2_replay
+    COMMAND f2_replay ${CMAKE_CURRENT_SOURCE_DIR}/data/F2/F2_observations.csv)
   add_test(NAME f3_replay
     COMMAND f3_replay 
       ${CMAKE_CURRENT_SOURCE_DIR}/data/F3/F3_target_snapshots.jsonl)
